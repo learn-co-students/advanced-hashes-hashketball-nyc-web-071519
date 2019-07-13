@@ -247,3 +247,70 @@ def most_points_scored
   end
   return leading_scorer
 end
+
+#2 variables, one for each team
+#iterate down to teams + values
+#conditional to return selected team's stats
+#push to corresponding teams empty array
+#conditional: using reduce, add up both teams array of points
+#return winning team
+def winning_team
+  nets = []
+  hornets = []
+
+  game_hash.values.each do |nets_stats|
+    if nets_stats[:team_name] == "Brooklyn Nets"
+      nets_stats[:players].each do |bk|
+          nets << bk[:points]
+      end
+    end
+  end
+
+  game_hash.values.each do |hornets_stats|
+    if hornets_stats[:team_name] == "Charlotte Hornets"
+      hornets_stats[:players].each do |ch|
+          hornets << ch[:points]
+      end
+    end
+  end
+    if nets.reduce(:+) > hornets.reduce(:+)
+      return "Brooklyn Nets"
+    else
+    return "Charlotte Hornets"
+  end
+end
+
+def player_with_longest_name
+  name_var = ""
+  longest_name = ""
+
+ game_hash.values.each do |roster|
+   roster[:players].each do |player|
+     if player[:player_name].length > name_var.length
+       name_var = player[:player_name]
+     end
+   end
+ end
+ return name_var
+end
+
+
+#same method as most_points_scored
+#comparing :steals value instead
+#conditional to return true if player_with_longest_name == player with most :steals value
+def long_name_steals_a_ton?
+     most_steals = 0
+     leading_stealer = ""
+
+    game_hash.values.each do |roster|
+      roster[:players].each do |player|
+        if player[:steals] > most_steals
+          most_steals = player[:steals]
+          leading_stealer = player[:player_name]
+        end
+      end
+    end
+    if leading_stealer == player_with_longest_name
+   return true
+    end
+  end
